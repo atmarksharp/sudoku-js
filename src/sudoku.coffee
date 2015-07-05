@@ -1,4 +1,4 @@
-DEBUG = false
+DEBUG = true
 
 debug_log = (s) ->
   if DEBUG is true

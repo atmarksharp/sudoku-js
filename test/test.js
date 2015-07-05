@@ -1,3 +1,4 @@
+
 QUnit.test("Sudoku.empty is 0", function(assert){
   assert.ok(Sudoku.empty === 0);
 });
@@ -29,7 +30,7 @@ QUnit.test("Sudoku solve - level 1", function(assert){
 
 
   var actual = Sudoku.beautify(Sudoku.solve(q));
-  assert.deepEqual(actual,expected);
+  assert.equal(actual,expected);
 });
 
 QUnit.test("Sudoku solve - level 2", function(assert){
@@ -59,8 +60,9 @@ QUnit.test("Sudoku solve - level 2", function(assert){
 
 
   var actual = Sudoku.beautify(Sudoku.solve(q));
-  assert.deepEqual(actual,expected);
+  assert.equal(actual,expected);
 });
+
 
 QUnit.test("Sudoku solve - level 3", function(assert){
   var _ = Sudoku.empty;
@@ -89,5 +91,5 @@ QUnit.test("Sudoku solve - level 3", function(assert){
 
 
   var actual = Sudoku.beautify(Sudoku.solve(q));
-  assert.deepEqual(actual,expected);
+  assert.equal(actual,expected);
 });

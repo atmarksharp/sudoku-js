@@ -2,7 +2,7 @@
 (function() {
   var DEBUG, GRP_LIST, Sudoku, check, debug_log, _g, _gx, _gy, _i, _x, _y;
 
-  DEBUG = false;
+  DEBUG = true;
 
   debug_log = function(s) {
     if (DEBUG === true) {
