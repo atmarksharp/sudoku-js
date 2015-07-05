@@ -67,8 +67,11 @@ class Sudoku
     ans = []
     cur = 0
     val = 1
+    count = 0
 
     while true
+      count++
+
       if val > 9 # back
         ans[cur] = 0
         loop
@@ -91,7 +94,9 @@ class Sudoku
             ret[i] = ans[i]
           else
             ret[i] = q[i]
-        return ret
+
+        console.log "count: #{count}"
+        return ret # Finish !!
 
       else
         if check(cur,val,q,ans)

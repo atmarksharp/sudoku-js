@@ -97,11 +97,13 @@
     };
 
     Sudoku.solve = function(q) {
-      var ans, cur, i, ret, val, _j;
+      var ans, count, cur, i, ret, val, _j;
       ans = [];
       cur = 0;
       val = 1;
+      count = 0;
       while (true) {
+        count++;
         if (val > 9) {
           ans[cur] = 0;
           while (true) {
@@ -128,6 +130,7 @@
               ret[i] = q[i];
             }
           }
+          console.log("count: " + count);
           return ret;
         } else {
           if (check(cur, val, q, ans)) {
