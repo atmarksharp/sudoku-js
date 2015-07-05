@@ -16,6 +16,10 @@ _gx = (i) ->
 _gy = (i) ->
   y = _y i
   Math.floor(y/3)*3
+_gx_x = (x) ->
+  Math.floor(x/3)*3
+_gy_y = (y) ->
+  Math.floor(y/3)*3
 
 GRP_LIST = [0,1,2,9,10,11,18,19,20]
 _g = (gi,n) ->
@@ -30,8 +34,8 @@ indexOf = (arr,v) ->
 check = (cur,val,q,a) ->
   x = _x cur
   y = _y cur
-  gx = _gx cur
-  gy = _gy cur
+  gx = _gx_x x
+  gy = _gy_y y
   gi = _i gx,gy
 
   for j in [0..8]
@@ -70,19 +74,19 @@ class Sudoku
     return @beautify(q)
 
   @solve: (q) ->
-    q_r = @solve_reduce(q)
+    [qr,note] = @solve_reduce(q)
 
     # check if solved
     solved = true
     for i in [0..80]
-      if q_r[i] isnt 0
+      if qr[i] isnt 0
         solved = false
         break
     
     if solved
-      return q_r
+      return qr
     else
-      return @solve_backtrack(q_r)
+      return @solve_backtrack(qr,note)
 
   # private
   @solve_reduce = (q) ->
@@ -101,10 +105,12 @@ class Sudoku
       changed = false
 
       for cur in [0..80]
+        continue if note[cur].length is 0
+
         x = _x cur
         y = _y cur
-        gx = _gx cur
-        gy = _gy cur
+        gx = _gx_x x
+        gy = _gy_y y
         gi = _i gx,gy
 
         for j in [0..8]
@@ -112,8 +118,8 @@ class Sudoku
           for i in ids
             continue if i is cur
 
-            v = q[i]
-            if q[i] is 0 
+            v = ans[i]
+            if ans[i] is 0 
               if note[i].length is 1
                 v = note[i][0]
               else
@@ -134,16 +140,31 @@ class Sudoku
       else
         changed = false
 
-    return ans
+    return [ans,note]
 
   # private
-  @solve_backtrack = (q) ->
+  @solve_backtrack = (q,note) ->
     ans = []
     cur = 0
     val = 1
     count = 0
     qid = 0
     qpos = []
+    note_ids = []
+
+
+    # # WORKAROUND
+    # note = []
+    # for i in [0..80]
+    #   if q[i] is 0
+    #     note.push [1,2,3,4,5,6,7,8,9]
+    #   else
+    #     note.push []
+    # # /WORKAROUND
+
+    for i in [0..80]
+      ans.push 0
+      note_ids.push 0
 
     # cache position data
     for i in [0..80]
@@ -152,6 +173,10 @@ class Sudoku
 
     # set first position
     cur = qpos[0]
+    return q if typeof cur is 'undefined' # already solved
+
+    val = note[cur][0]
+    note_ids[cur] = 0
 
     while true
       count++
@@ -159,6 +184,8 @@ class Sudoku
       # backtrack
       if val > 9
         ans[cur] = 0
+        note_ids[cur] = 0
+
         qid--
         cur = qpos[qid]
         cur = -1 if typeof cur is 'undefined'
@@ -167,7 +194,10 @@ class Sudoku
           debug_log "failed"
           return [] # solution failed
         else
-          val = ans[cur] + 1
+          note_ids[cur] = note_ids[cur] + 1
+          val = note[cur][note_ids[cur]]
+          val = 10 if typeof val is 'undefined'
+
           ans[cur] = 0
           debug_log "---> backtrack to (#{_x cur},#{_y cur})"
           continue
@@ -189,15 +219,23 @@ class Sudoku
         if check(cur,val,q,ans)
           debug_log "[PUT] #{val} on (#{_x cur},#{_y cur})"
           ans[cur] = val
-          val = 1
+          
           qid++
           cur = qpos[qid]
           cur = 81 if typeof cur is 'undefined'
+          if cur is 81
+            continue
+
+          note_ids[cur] = 0
+          val = note[cur][0]
 
           debug_log "---> move to (#{_x cur},#{_y cur})"
           continue
         else
-          val++
+          note_ids[cur] = note_ids[cur] + 1
+          val = note[cur][note_ids[cur]]
+          val = 10 if typeof val is 'undefined'
+
           continue
 
 
