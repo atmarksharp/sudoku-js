@@ -48,15 +48,23 @@
     return gi + GRP_LIST[n];
   };
 
-  indexOf = function(arr, v) {
-    var i, _j, _ref;
-    for (i = _j = 0, _ref = arr.length - 1; 0 <= _ref ? _j <= _ref : _j >= _ref; i = 0 <= _ref ? ++_j : --_j) {
-      if (arr[i] === v) {
-        return i;
+  indexOf = null;
+
+  if (typeof Array.prototype.indexOf === 'undefined') {
+    indexOf = function(arr, v) {
+      var i, _j, _ref;
+      for (i = _j = 0, _ref = arr.length - 1; 0 <= _ref ? _j <= _ref : _j >= _ref; i = 0 <= _ref ? ++_j : --_j) {
+        if (arr[i] === v) {
+          return i;
+        }
       }
-    }
-    return -1;
-  };
+      return -1;
+    };
+  } else {
+    indexOf = function(arr, v) {
+      return arr.indexOf(v);
+    };
+  }
 
   check = function(cur, val, q, a) {
     var gi, gx, gy, i, ids, j, v, x, y, _j, _k, _len;
@@ -73,7 +81,7 @@
           continue;
         }
         v = q[i];
-        if (q[i] === 0) {
+        if (v === 0) {
           v = a[i];
         }
         if (v === val) {
@@ -119,7 +127,7 @@
       _ref = this.solve_reduce(q), qr = _ref[0], note = _ref[1];
       solved = true;
       for (i = _j = 0; _j <= 80; i = ++_j) {
-        if (qr[i] !== 0) {
+        if (qr[i] === 0) {
           solved = false;
           break;
         }
@@ -162,7 +170,7 @@
                 continue;
               }
               v = ans[i];
-              if (ans[i] === 0) {
+              if (v === 0) {
                 if (note[i].length === 1) {
                   v = note[i][0];
                 } else {

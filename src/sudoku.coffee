@@ -25,11 +25,16 @@ GRP_LIST = [0,1,2,9,10,11,18,19,20]
 _g = (gi,n) ->
   gi+GRP_LIST[n]
 
-indexOf = (arr,v) ->
-  for i in [0..(arr.length-1)]
-    if arr[i] is v
-      return i
-  return -1
+indexOf = null
+if typeof Array.prototype.indexOf is 'undefined'
+  indexOf = (arr,v) ->
+    for i in [0..(arr.length-1)]
+      if arr[i] is v
+        return i
+    return -1
+else
+  indexOf = (arr,v) ->
+    return arr.indexOf(v)
 
 check = (cur,val,q,a) ->
   x = _x cur
@@ -44,7 +49,7 @@ check = (cur,val,q,a) ->
       continue if i is cur
 
       v = q[i]
-      v = a[i] if q[i] is 0
+      v = a[i] if v is 0
 
       if v is val
         return false
@@ -79,7 +84,7 @@ class Sudoku
     # check if solved
     solved = true
     for i in [0..80]
-      if qr[i] isnt 0
+      if qr[i] is 0
         solved = false
         break
     
@@ -119,7 +124,7 @@ class Sudoku
             continue if i is cur
 
             v = ans[i]
-            if ans[i] is 0 
+            if v is 0 
               if note[i].length is 1
                 v = note[i][0]
               else
