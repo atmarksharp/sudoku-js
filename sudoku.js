@@ -123,11 +123,12 @@
     };
 
     Sudoku.solve = function(q) {
-      var i, note, qr, solved, _j, _ref;
+      var n, note, qr, solved, _j, _len, _ref;
       _ref = this.solve_reduce(q), qr = _ref[0], note = _ref[1];
       solved = true;
-      for (i = _j = 0; _j <= 80; i = ++_j) {
-        if (qr[i] === 0) {
+      for (_j = 0, _len = qr.length; _j < _len; _j++) {
+        n = qr[_j];
+        if (n === 0) {
           solved = false;
           break;
         }
@@ -140,12 +141,13 @@
     };
 
     Sudoku.solve_reduce = function(q) {
-      var ans, changed, cur, gi, gx, gy, i, ids, j, note, pos, v, x, y, _j, _k, _l, _len, _m, _n;
+      var ans, changed, cur, gi, gx, gy, i, ids, j, n, note, pos, v, x, y, _j, _k, _l, _len, _len1, _m, _n;
       changed = false;
       note = [];
       ans = q.slice(0);
-      for (i = _j = 0; _j <= 80; i = ++_j) {
-        if (q[i] === 0) {
+      for (_j = 0, _len = q.length; _j < _len; _j++) {
+        n = q[_j];
+        if (n === 0) {
           note.push([1, 2, 3, 4, 5, 6, 7, 8, 9]);
         } else {
           note.push([]);
@@ -164,7 +166,7 @@
           gi = _i(gx, gy);
           for (j = _l = 0; _l <= 8; j = ++_l) {
             ids = [_i(j, y), _i(x, j), _g(gi, j)];
-            for (_m = 0, _len = ids.length; _m < _len; _m++) {
+            for (_m = 0, _len1 = ids.length; _m < _len1; _m++) {
               i = ids[_m];
               if (i === cur) {
                 continue;

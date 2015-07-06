@@ -83,8 +83,8 @@ class Sudoku
 
     # check if solved
     solved = true
-    for i in [0..80]
-      if qr[i] is 0
+    for n in qr
+      if n is 0
         solved = false
         break
     
@@ -99,8 +99,8 @@ class Sudoku
     note = []
     ans = q.slice(0)
 
-    for i in [0..80]
-      if q[i] is 0
+    for n in q
+      if n is 0
         note.push [1,2,3,4,5,6,7,8,9]
       else
         note.push []
@@ -156,16 +156,6 @@ class Sudoku
     qid = 0
     qpos = []
     note_ids = []
-
-
-    # # WORKAROUND
-    # note = []
-    # for i in [0..80]
-    #   if q[i] is 0
-    #     note.push [1,2,3,4,5,6,7,8,9]
-    #   else
-    #     note.push []
-    # # /WORKAROUND
 
     for i in [0..80]
       ans.push 0
